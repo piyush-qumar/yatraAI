@@ -1,13 +1,14 @@
-const mongooose = require('mongoose');
+const mongoose = require('mongoose');
 
-const destinationSchema = new mongooose.Schema({
+const destinationSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
     },
     countryCode: {
         type: String,
-        required: true,
+        default: 'IN',
+        // required: true, // since it is india first , firstly making it optional
     },
     region: {
         type: String,
@@ -15,9 +16,9 @@ const destinationSchema = new mongooose.Schema({
     },
     terrain: {
         type: String,
-        enum: ["mountain", "desert", "forest", "plains"],
+        enum: ["HIMALAYAN", "COASTAL", "DESERT", "PLAINS", "FOREST"],
     },
-    bestMonthsToVisit: {
+    bestMonths: {
         type: [String],
     },
     activities: {
@@ -35,13 +36,15 @@ const destinationSchema = new mongooose.Schema({
     safetyTips: {
         type: [String],
     },
-    bookingGuides: {
+    bookingGuide: {
         type: [String],
     },
-    aisummary: {
+    aiSummary: {
         type: String,
     },
     embedding: {
         type: [Number],
+        default: [],
     },
 }, { timestamps: true });
+module.exports = mongoose.model('Destination', destinationSchema);
