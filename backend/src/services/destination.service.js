@@ -6,8 +6,9 @@ const createDestination = async(data) => {
     // return await destination.save();
 }
 
-const getAllDestinations = async() => {
-    return await Destination.find();
+const getAllDestinations = async(filters, page = 1, limit = 10) => {
+    const skip = (page - 1) * limit;
+    return await Destination.find(filters).skip(skip).limit(limit);
 };
 
 const getDestinationById = async(id) => {
