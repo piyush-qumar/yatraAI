@@ -47,4 +47,10 @@ const destinationSchema = new mongoose.Schema({
         default: [],
     },
 }, { timestamps: true });
+
+destinationSchema.index(
+  { name: 1, countryCode: 1 },
+  { unique: true }
+);
+
 module.exports = mongoose.model('Destination', destinationSchema);
