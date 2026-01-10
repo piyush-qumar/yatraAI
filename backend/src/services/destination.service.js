@@ -8,7 +8,11 @@ const createDestination = async(data) => {
 
 const getAllDestinations = async(filters, page = 1, limit = 10) => {
     const skip = (page - 1) * limit;
-    return await Destination.find(filters).skip(skip).limit(limit);
+    const [data, total] = await Promise.all([
+    Destination.find(filters).skip(skip).limit(limit),
+    Destination.countDocuments(filters),
+  ]);
+    return { data, total, page, limit, totalPages: Math.ceil(total / limit) };
 };
 
 const getDestinationById = async(id) => {
