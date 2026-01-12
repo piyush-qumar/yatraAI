@@ -1,9 +1,16 @@
 const Destination  = require('../models/destination.model');
+const {generateDestinationSummary} = require('./ai.service');
 
 const createDestination = async(data) => {
-    return await Destination.create(data);
-    // const destination = new Destination(data);
-    // return await destination.save();
+    const destination = await Destination.create(data);
+    try {
+    const aiSummary = await generateDestinationSummary(destination);
+    destination.aiSummary = aiSummary;
+    await destination.save();
+    } catch (error) {
+        console.error("AI summary generation failed:", error);
+    }
+    return destination
 }
 
 const getAllDestinations = async(filters, page = 1, limit = 10) => {
