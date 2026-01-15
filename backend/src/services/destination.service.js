@@ -1,5 +1,5 @@
 const Destination  = require('../models/destination.model');
-const {generateDestinationSummary} = require('./ai.service');
+const {generateDestinationSummary, indexDestination} = require('./ai.service');
 
 const createDestination = async(data) => {
     const destination = await Destination.create(data);
@@ -7,6 +7,8 @@ const createDestination = async(data) => {
     const aiSummary = await generateDestinationSummary(destination);
     destination.aiSummary = aiSummary;
     await destination.save();
+    // Index it for RAG
+    await indexDestination(destination);
     } catch (error) {
         console.error("AI summary generation failed:", error);
     }
